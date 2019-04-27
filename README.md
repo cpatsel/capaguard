@@ -3,7 +3,9 @@ Network Intrusion Detection hub
 
 ## Dependencies
 
-None yet.
+```
+sudo apt install tcpdump mail-utils snort* build-essential linux-headers-`uname -r`
+```
 
 ## Installation
 
