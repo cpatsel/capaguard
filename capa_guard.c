@@ -32,9 +32,15 @@ enum hrtimer_restart timer_callback( struct hrtimer *timer )
     printk(KERN_INFO "[CAPA] Timer callback function triggered...");   
     //Here we would likely call the script that has snort look through our log files.
 
-    //char* argv[] = {execEnvironment, scriptDir+"exampleScript.sh", NULL};
-    // /* This command should call our arguments we specified above." */
-    //call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC); 
+    char* snortArgs[] = {execEnvironment, scriptDir+"runSnort.sh", NULL};
+    char* envp[] = {"HOME=/", "PATH=/sbin:/usr/sbin:/bin:/usr/bin", NULL }
+     /* This command should call our arguments we specified above." */
+    call_usermodehelper(snortArgs[0], snortArgs, envp, UMH_WAIT_PROC);
+    
+    char* alertArgs[] = {execEnvironment, scriptDir+"alertAdmin.sh", "/var/log/capaguardSnortResult", NULL};
+    call_usermodehelper(alertArgs[0], alertArgs, envp, UMH_WAIT_EXEC);
+    
+    
     return enHRTimer;
 }
 
@@ -43,6 +49,7 @@ enum hrtimer_restart timer_callback( struct hrtimer *timer )
  */
 static int __init kinit_func(void) {
 
+    printk(KERN_INFO "[CAPA] Initializing CAPA Guard...");
     ktime_t kt;
 
     enHRTimer = HRTIMER_RESTART;
@@ -54,9 +61,12 @@ static int __init kinit_func(void) {
     hr_timer.function = &timer_callback;
     hrtimer_start( &hr_timer, kt, HRTIMER_MODE_ABS);
 
+    //Start tcpdump
+    char* tcpdumpArgs[] = {execEnvironment, scriptDir+"initTcpdump.sh", NULL};
+    char* envp[] = {"HOME=/", "PATH=/sbin:/usr/sbin:/bin:/usr/bin", NULL }
+    call_usermodehelper(tcpdumpArgs[0], tcpdumpArgs, envp, UMH_WAIT_EXEC); 
 
- printk(KERN_INFO "[CAPA] CAPA Guard initialized.");
- return 0;
+    return 0;
 }
 
 /* kexit_func
