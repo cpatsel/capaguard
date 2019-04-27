@@ -14,7 +14,7 @@ MODULE_AUTHOR("Team CAPA");
 MODULE_DESCRIPTION("Network IDS Hub");
 MODULE_VERSION("0.1");
 
-static char* scriptDir = "/bin/capaguard/"; //Location of the scripts.
+//static char* scriptDir = "/bin/capaguard/"; //Location of the scripts.
 static char* execEnvironment = "/bin/bash"; //What shell we will be using.
 
 
@@ -32,12 +32,12 @@ enum hrtimer_restart timer_callback( struct hrtimer *timer )
     printk(KERN_INFO "[CAPA] Timer callback function triggered...");   
     //Here we would likely call the script that has snort look through our log files.
 
-    char* snortArgs[] = {execEnvironment, scriptDir+"runSnort.sh", NULL};
-    char* envp[] = {"HOME=/", "PATH=/sbin:/usr/sbin:/bin:/usr/bin", NULL }
+    char* snortArgs[] = {execEnvironment, "/bin/capaguard/runSnort.sh", NULL};
+    char* envp[] = {"HOME=/", "PATH=/sbin:/usr/sbin:/bin:/usr/bin", NULL };
      /* This command should call our arguments we specified above." */
     call_usermodehelper(snortArgs[0], snortArgs, envp, UMH_WAIT_PROC);
     
-    char* alertArgs[] = {execEnvironment, scriptDir+"alertAdmin.sh", "/var/log/capaguardSnortResult", NULL};
+    char* alertArgs[] = {execEnvironment, "/bin/capaguard/alertAdmin.sh", "/var/log/capaguardSnortResult", NULL};
     call_usermodehelper(alertArgs[0], alertArgs, envp, UMH_WAIT_EXEC);
     
     
@@ -62,8 +62,8 @@ static int __init kinit_func(void) {
     hrtimer_start( &hr_timer, kt, HRTIMER_MODE_ABS);
 
     //Start tcpdump
-    char* tcpdumpArgs[] = {execEnvironment, scriptDir+"initTcpdump.sh", NULL};
-    char* envp[] = {"HOME=/", "PATH=/sbin:/usr/sbin:/bin:/usr/bin", NULL }
+    char* tcpdumpArgs[] = {execEnvironment, "/bin/capaguard/initTcpdump.sh", NULL};
+    char* envp[] = {"HOME=/", "PATH=/sbin:/usr/sbin:/bin:/usr/bin", NULL };
     call_usermodehelper(tcpdumpArgs[0], tcpdumpArgs, envp, UMH_WAIT_EXEC); 
 
     return 0;
