@@ -14,8 +14,8 @@ MODULE_AUTHOR("Team CAPA");
 MODULE_DESCRIPTION("Network IDS Hub");
 MODULE_VERSION("0.1");
 
-static char* scriptDir = "/bin/capaguard/" //Location of the scripts.
-static char* execEnvironment = "/bin/bash" //What shell we will be using.
+static char* scriptDir = "/bin/capaguard/"; //Location of the scripts.
+static char* execEnvironment = "/bin/bash"; //What shell we will be using.
 
 
 static struct hrtimer hr_timer;
