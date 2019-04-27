@@ -1,0 +1,14 @@
+[Unit]
+Description=Network IDS Hub
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=60
+ExecStart=/bin/bash /bin/capaguard/runSnort.sh/
+
+[Install]
+WantedBy=multi-user.target
+
