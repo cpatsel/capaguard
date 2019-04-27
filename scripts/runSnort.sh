@@ -6,5 +6,5 @@ snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i enp0s8 -r /var
 
 #Then run alert admin.
 
-/bin/capaguard/alertAdmin.sh
+/bin/capaguard/alertAdmin.sh /var/log/capaguardSnortResult
 
