@@ -16,3 +16,6 @@ sudo apt install tcpdump mail-utils snort*
  sudo ./install
 
  ```
+## Testing
+
+Once the scripts and services are running, you can test that it is working by sending network traffic that gets picked up by snort as malicious. As an example, you can use the nmap tool to run a port scan on the host machine, where snort will, if configured properly, pick it up as a suspicious activity and mail the user defined in the alertAdmin script.
